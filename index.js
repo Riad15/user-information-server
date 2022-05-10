@@ -30,6 +30,13 @@ async function run() {
             const information = await cursor.toArray();
             res.send(information);
         })
+
+        // insert a customer information
+        app.post('/customers', async (req, res) => {
+            const newCustomer = req.body;
+            const result = await Customer.insertOne(newCustomer);
+            res.send(result);
+        })
     }
     finally {
 
