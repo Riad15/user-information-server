@@ -13,6 +13,33 @@ app.use(cors());
 app.use(express.json());
 
 
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://user-information:VwAr5MWrQHnBpvyi@cluster0.br82r.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+async function run() {
+    try {
+        await client.connect();
+        const Customer = client.db('customer').collection("customer-information");
+
+        // find multiple customer 
+        app.get('/customers', async (req, res) => {
+            const query = {};
+            const cursor = Customer.find(query);
+            const information = await cursor.toArray();
+            res.send(information);
+        })
+    }
+    finally {
+
+    }
+
+}
+run().catch(console.dir)
+
+
+
 app.get('/', (req, res) => {
     res.send('customer server is running')
 })
